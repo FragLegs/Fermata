@@ -25,7 +25,7 @@ import java.awt.Dimension;
 @SuppressWarnings("serial")
 public class FermataWindow extends JFrame {
 
-	private JPanel contentPane;
+	private JPanel contentPane; // commnt
 
 	/**
 	 * Launch the application.
