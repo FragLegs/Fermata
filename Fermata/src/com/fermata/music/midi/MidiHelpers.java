@@ -1,6 +1,6 @@
 package com.fermata.music.midi;
 
-import com.fermata.ui.custom.PianoKey.PianoKeyType;
+import com.fermata.ui.PianoKeyType;
 
 public class MidiHelpers {
 
