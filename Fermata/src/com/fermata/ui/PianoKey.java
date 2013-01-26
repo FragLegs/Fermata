@@ -1,8 +1,10 @@
 package com.fermata.ui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
@@ -29,11 +31,13 @@ public abstract class PianoKey extends JButton {
 		value = v;
 		name = KeyNames[v % 12];
 		octave = (v / 12) - 1;
+		
+		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				
 		this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				down = true;
+				down = !down;
 				updateBackground();
 			}
 		});

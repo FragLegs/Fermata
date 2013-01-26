@@ -1,5 +1,6 @@
 package com.fermata.ui;
 
+import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
@@ -14,6 +15,9 @@ public class Piano extends JLayeredPane {
 	private PianoKey[] keys;
 	public PianoKey[] getKeys() { return keys; }
 	
+	private int highKey;
+	private int lowKey;
+	
 	// the number of white keys (tracked as convenience for resizing)
 	private int numWhite;
 	public int getNumWhite() { return numWhite; }
@@ -23,9 +27,12 @@ public class Piano extends JLayeredPane {
 		this(21, 108);
 	}
 	
-	public Piano(int lowKey, int highKey)
+	public Piano(int lKey, int hKey)
 	{
 		super();
+		
+		highKey = hKey;
+		lowKey = lKey;
 		
 		keys = new PianoKey[highKey - lowKey + 1];
 		
@@ -36,17 +43,17 @@ public class Piano extends JLayeredPane {
 			PianoKey k = PianoKey.CreateKey(i);
 			
 			// store it
-			keys[i] = k;
+			keys[i - lowKey] = k;
 
 			// add it to the pane
 			// if it is a black key add it on the second layer
-			add(k, (k instanceof BlackKey) ? 1 : 0);
+			add(k, (k instanceof BlackKey) ? 51 : 50, 0);
 			
 			// track number of white keys
 			if (k instanceof WhiteKey) numWhite++;
 		}
 		
-
+		this.addComponentListener(new PianoResizeListener());
 		
 		
 		
@@ -72,15 +79,28 @@ public class Piano extends JLayeredPane {
 			Piano p = (Piano)e.getComponent();
 			
 			// get the width of the white keys
-			int whiteWidth = getWidth() / p.getNumWhite();
-			int halfBlackWidth = whiteWidth / 3;
-			int offset = ((p.getNumWhite() * whiteWidth) - getWidth()) / 2; // center the keyboard
+			double whiteWidth = (double)getWidth() / (double)p.getNumWhite();
+			double halfBlackWidth = whiteWidth / 3;
+			//int offset = ((p.getNumWhite() * whiteWidth) - getWidth()) / 2; // center the keyboard
 			int whiteHeight = getHeight();
-			int blackHeight = (getHeight() / 3) * 2;
+			int blackHeight = (int)((double)getHeight() / 3) * 2;
 			
+			double xLoc = 0;
+			
+			// resize the piano keys
 			for (PianoKey k : p.getKeys())
 			{
-			
+				// white keys
+				if (k instanceof WhiteKey)
+				{
+					k.setBounds((int)xLoc, 0, (int)(xLoc + whiteWidth) - (int)xLoc, whiteHeight);
+					xLoc += whiteWidth;
+				}
+				// black keys
+				else
+				{
+					k.setBounds((int)(xLoc - halfBlackWidth), 0, (int)(2 * halfBlackWidth), blackHeight);
+				}					
 			}
 		}
 
