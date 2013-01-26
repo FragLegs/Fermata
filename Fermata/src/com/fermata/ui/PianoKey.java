@@ -37,10 +37,15 @@ public abstract class PianoKey extends JButton {
 		this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				down = !down;
-				updateBackground();
+				pushKey();
 			}
 		});
+	}
+	
+	public void pushKey()
+	{
+		down = !down;
+		updateBackground();
 	}
 	
 	public abstract void updateBackground();

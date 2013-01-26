@@ -149,5 +149,6 @@ public class FermataWindow extends JFrame {
 		pianoConstraints.weightx = 1.0;
 		pianoConstraints.weighty = 0.34;
 		windowPanel.add(piano, pianoConstraints);
+		
 	}
 }
