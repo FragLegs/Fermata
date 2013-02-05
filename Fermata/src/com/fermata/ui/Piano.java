@@ -75,12 +75,14 @@ public class Piano extends JLayeredPane {
 
 	public void PianoKeyDown(int midiValue) {
 		if (!checkBounds(midiValue)) return;
+		if (keys[midiValue - lowKey].isDown()) return;
 		pushKey(midiValue);
 		for (PianoListener pl : listeners) pl.PianoKeyDown(midiValue);
 	}
 
 	public void PianoKeyUp(int midiValue) {
 		if (!checkBounds(midiValue)) return;
+		if (!keys[midiValue - lowKey].isDown()) return;
 		pushKey(midiValue);
 		for (PianoListener pl : listeners) pl.PianoKeyUp(midiValue);
 	}

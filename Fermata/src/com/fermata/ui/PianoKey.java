@@ -72,6 +72,7 @@ public abstract class PianoKey extends JButton {
 		}
 	}
 
-	public static String[] KeyNames = { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B" }; 
+	public static String[] KeyNames = { "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B" };
+
 }
 
