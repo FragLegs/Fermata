@@ -5,9 +5,9 @@ import java.awt.Color;
 @SuppressWarnings("serial")
 public class WhiteKey extends PianoKey {
 
-		public WhiteKey(int v)
+		public WhiteKey(int v, Piano p)
 		{
-			super(v);
+			super(v, p);
 			
 			// set pressed state
 			down = false;

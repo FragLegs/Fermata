@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import java.util.*;
 
 @SuppressWarnings("serial")
 public abstract class PianoKey extends JButton {
@@ -26,18 +27,23 @@ public abstract class PianoKey extends JButton {
 	private int octave;
 	public int getOctave() { return octave; }
 	
-	public PianoKey(int v)
+	// the piano this key is on
+	private Piano piano;
+	
+	public PianoKey(int v, Piano p)
 	{
 		value = v;
 		name = KeyNames[v % 12];
 		octave = (v / 12) - 1;
+		piano = p;
 		
 		this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				
 		this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				pushKey();
+				if (down) piano.PianoKeyUp(value);
+				else piano.PianoKeyDown(value);
 			}
 		});
 	}
@@ -51,7 +57,7 @@ public abstract class PianoKey extends JButton {
 	public abstract void updateBackground();
 	
 	// create a piano key from a numeric value
-	public static PianoKey CreateKey(int v)
+	public static PianoKey CreateKey(int v, Piano p)
 	{
 		switch (v % 12)
 		{
@@ -60,9 +66,9 @@ public abstract class PianoKey extends JButton {
 		case 6:
 		case 8:
 		case 10:
-			return new BlackKey(v);
+			return new BlackKey(v, p);
 		default:
-			return new WhiteKey(v);
+			return new WhiteKey(v, p);
 		}
 	}
 

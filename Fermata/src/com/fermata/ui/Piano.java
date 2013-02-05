@@ -3,6 +3,8 @@ package com.fermata.ui;
 import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLayeredPane;
 
@@ -10,6 +12,12 @@ import com.fermata.music.midi.MidiHelpers;
 
 @SuppressWarnings("serial")
 public class Piano extends JLayeredPane {
+
+	List<PianoListener> listeners = new ArrayList<PianoListener>();
+	
+	public void addListener(PianoListener toAdd) {
+        listeners.add(toAdd);
+    }
 	
 	// the keys
 	private PianoKey[] keys;
@@ -40,7 +48,7 @@ public class Piano extends JLayeredPane {
 		for (int i = lowKey; i <= highKey; i++)
 		{
 			// create the key
-			PianoKey k = PianoKey.CreateKey(i);
+			PianoKey k = PianoKey.CreateKey(i, this);
 			
 			// store it
 			keys[i - lowKey] = k;
@@ -59,6 +67,16 @@ public class Piano extends JLayeredPane {
 	public void pushKey(int midiValue)
 	{
 		keys[midiValue - lowKey].pushKey();
+	}
+
+	public void PianoKeyDown(int midiValue) {
+		pushKey(midiValue);
+		for (PianoListener pl : listeners) pl.PianoKeyDown(midiValue);
+	}
+
+	public void PianoKeyUp(int midiValue) {
+		pushKey(midiValue);
+		for (PianoListener pl : listeners) pl.PianoKeyUp(midiValue);
 	}
 	
 }
