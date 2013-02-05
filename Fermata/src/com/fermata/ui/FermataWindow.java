@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -20,14 +22,28 @@ import javax.swing.JLabel;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class FermataWindow extends JFrame {
+    private class MyDispatcher implements KeyEventDispatcher {
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent e) {
+    		if (e.getID() == KeyEvent.KEY_PRESSED) {
+    			piano.PianoKeyDown(e.getKeyCode());
+            } else if (e.getID() == KeyEvent.KEY_RELEASED) {
+            	piano.PianoKeyUp(e.getKeyCode());
+            }
+            return false;
+        }
+    }
 
 	private JPanel contentPane;
+	private Piano piano;
 
 	/**
 	 * Launch the application.
@@ -139,7 +155,7 @@ public class FermataWindow extends JFrame {
 		}
 		catch (IOException e) { throw e; } // just throw for now because this would be a code error, not a user error
 */		
-		Piano piano = new Piano();
+		piano = new Piano();
 		piano.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)));
 		piano.setBackground(Color.PINK);//SystemColor.control);
 		GridBagConstraints pianoConstraints = new GridBagConstraints();
@@ -150,5 +166,8 @@ public class FermataWindow extends JFrame {
 		pianoConstraints.weighty = 0.34;
 		windowPanel.add(piano, pianoConstraints);
 		
+        KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        manager.addKeyEventDispatcher(new MyDispatcher());
 	}
+
 }
