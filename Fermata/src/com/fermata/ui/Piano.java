@@ -1,14 +1,9 @@
 package com.fermata.ui;
 
-import java.awt.Color;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JLayeredPane;
 
-import com.fermata.music.midi.MidiHelpers;
 
 @SuppressWarnings("serial")
 public class Piano extends JLayeredPane {
