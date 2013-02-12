@@ -11,6 +11,7 @@ import java.awt.KeyboardFocusManager;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import javax.swing.JMenuBar;
@@ -42,6 +43,7 @@ public class FermataWindow extends JFrame {
 
 	private JPanel contentPane; // commnt
 	private Piano piano;
+	private Staff staff;
 
 	/**
 	 * Launch the application.
@@ -110,9 +112,11 @@ public class FermataWindow extends JFrame {
 		windowPanel.setLayout(new GridBagLayout());
 		contentPane.add(windowPanel, BorderLayout.CENTER);
 		
-		// Build the panel where we will be displaying the staff
+		// load the staff
 		JPanel staffPanel = new JPanel();
-		staffPanel.setBackground(Color.WHITE);
+		staffPanel.setLayout(new GridBagLayout());
+		staff = new Staff();
+		staffPanel.add(staff, new GridBagConstraints());
 		GridBagConstraints staffConstraints = new GridBagConstraints();
 		staffConstraints.fill = GridBagConstraints.BOTH;
 		staffConstraints.gridx = 0;
@@ -120,42 +124,10 @@ public class FermataWindow extends JFrame {
 		staffConstraints.weightx = 1.0;
 		staffConstraints.weighty = 0.66;
 		windowPanel.add(staffPanel, staffConstraints);
-		
-		// load the staff image
-		// TODO: refactor into a component
-		try
-		{
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		    InputStream input = classLoader.getResourceAsStream("resources/220px-Grand_staff.svg.png");
-		    Image staffImg = ImageIO.read(input);
-			staffPanel.setLayout(new BorderLayout(0, 0));
-			JLabel staffLabel = new JLabel( new ImageIcon( staffImg ) );
-			staffPanel.add(staffLabel, BorderLayout.CENTER);
-		}
-		catch (IOException e) { throw e; } // just throw for now because this would be a code error, not a user error
-		
-/*		// Build the panel where we will be displaying the keyboard
-		JPanel keyboardPanel = new JPanel();
-		keyboardPanel.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)));
-		keyboardPanel.setBackground(SystemColor.control);
-		contentPane.add(keyboardPanel, BorderLayout.SOUTH);
-		
-		// load the keyboard image
-		// TODO: refactor into a component
-		try
-		{
-			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		    InputStream input = classLoader.getResourceAsStream("resources/keyboard4.png");
-		    Image keyboardImg = ImageIO.read(input);
-			keyboardPanel.setLayout(new BorderLayout(0, 0));
-			JLabel keyboardLabel = new JLabel( new ImageIcon( keyboardImg ) );
-			keyboardPanel.add(keyboardLabel, BorderLayout.CENTER);
-		}
-		catch (IOException e) { throw e; } // just throw for now because this would be a code error, not a user error
-*/		
+
+		// load the piano
 		piano = new Piano();
 		piano.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)));
-		piano.setBackground(Color.PINK);//SystemColor.control);
 		GridBagConstraints pianoConstraints = new GridBagConstraints();
 		pianoConstraints.fill = GridBagConstraints.BOTH;
 		pianoConstraints.gridx = 0;
